@@ -1,0 +1,4 @@
+/home/manuel/Trabajo_final/build/CMakeFiles/refsignal.dir
+/home/manuel/Trabajo_final/build/CMakeFiles/test_ref.dir
+/home/manuel/Trabajo_final/build/CMakeFiles/edit_cache.dir
+/home/manuel/Trabajo_final/build/CMakeFiles/rebuild_cache.dir
