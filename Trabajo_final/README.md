@@ -35,11 +35,20 @@ Ref ---->(+)---> Regulador ---> DAC ---> Sistema ----+
 ```
 Trabajo_final/
 ├── include/
-│   ├── ref.h              # Generador de señales de referencia
-│   └── test_ref.h         # (Pruebas)
+│   ├── DiscreteSystems/          # Librería base de sistemas discretos
+│   ├── DiscreteSystems.h
+│   ├── ref.h                      # Generador de señales de referencia
+│   ├── controlador.h              # Controlador PID discreto
+│   └── convertidores.h            # Convertidores ADC/DAC
 ├── src/
-│   ├── ref.cpp            # Implementación de señales
-│   └── test_ref.cpp       # Programa de prueba
+│   ├── DiscreteSystem.cpp
+│   ├── TransferFunctionSystem.cpp
+│   ├── StateSpaceSystem.cpp
+│   ├── ref.cpp                    # Implementación de señales
+│   ├── controlador.cpp            # Implementación del PID
+│   ├── convertidores.cpp          # Implementación de convertidores
+│   ├── test_ref.cpp               # Pruebas del generador de señales
+│   └── test_controlador.cpp       # Pruebas del controlador
 ├── CMakeLists.txt
 ├── README.md
 └── .gitignore
@@ -100,16 +109,13 @@ La documentación del código se genera con Doxygen. Todos los archivos incluyen
 
 ## Próximos Pasos
 
-- Regulador discreto (P, PI, PID)
-- Sistema/Planta
-- DAC y ADC
-- Hilos y sincronización
+- Sistema/Planta (discreto o discretizado)
+- Simulación completa del lazo cerrado
+- Hilos y sincronización (temporizadores, semáforos, mutex)
 - Comunicación IPC con UI
 
 ## Autor
 
-Manuel
+Manuel Gutiérrez
 
-## Licencia
 
-(Por definir)
