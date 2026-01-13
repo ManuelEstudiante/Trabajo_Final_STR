@@ -73,7 +73,8 @@ make
 ### Ejecutar pruebas
 
 ```bash
-./bin/test_ref
+./bin/test_ref          # Pruebas del generador de señales
+./bin/test_controlador  # Pruebas del controlador PID, ADC y DAC
 ```
 
 ## Módulo: Generador de Señales (ref)
@@ -102,6 +103,56 @@ Genera: oscilación senoidal de amplitud 3.0 a 1 Hz
 - `compute()`: Calcula valor en tiempo actual sin avanzar
 - `next()`: Calcula, almacena en buffer y avanza tiempo
 - `reset()`: Reinicia la señal
+
+## Módulo: Controlador PID Discreto (controlador)
+
+Implementa regulador PID en forma incremental (velocity form):
+
+$$\Delta u[k] = a_0 e[k] + a_1 e[k-1] + a_2 e[k-2]$$
+
+$$u[k] = u[k-1] + \Delta u[k]$$
+
+Donde los coeficientes se calculan a partir de las ganancias:
+- $a_0 = K_p + K_i T_s + K_d/T_s$
+- $a_1 = -K_p - 2K_d/T_s$
+- $a_2 = K_d/T_s$
+
+### Ventajas de la forma incremental
+- **Evita windup del integrador**: No acumula infinitamente
+- **Mejor comportamiento numérico**: Menos propenso a errores de redondeo
+- **Recomendado para sistemas embebidos**: Especialmente importante en tiempo real
+
+### Características
+- Constructor: `PIDController(Kp, Ki, Kd, Ts, bufferSize)`
+- Sintonización on-line: `setKp()`, `setKi()`, `setKd()`, `setGains()`
+- Buffers circulares para historial de muestras
+- Método `next(error)` calcula la acción de control
+
+## Módulo: Convertidores (convertidores)
+
+### ADConverter (Analógico-Digital)
+Introduce un retardo de una muestra para representar el tiempo de conversión real:
+
+$$y_d[k] = y[k-1] \quad \Rightarrow \quad H(z) = z^{-1}$$
+
+**Uso:**
+```cpp
+Convertidores::ADConverter adc(Ts);
+double y_digital = adc.next(y_analogico);
+```
+
+### DAConverter (Digital-Analógico)
+Paso directo de la señal digital:
+
+$$u(t) = u[k], \quad kT_s \le t < (k+1)T_s \quad \Rightarrow \quad H(z) = 1$$
+
+El comportamiento Zero-Order Hold (ZOH) se gestiona externamente mediante `nextAt()` en simulaciones multi-tasa.
+
+**Uso:**
+```cpp
+Convertidores::DAConverter dac(Ts);
+double u_analogico = dac.next(u_digital);
+```
 
 ## Documentación
 
