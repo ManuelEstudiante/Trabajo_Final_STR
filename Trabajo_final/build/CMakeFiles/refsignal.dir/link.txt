@@ -1,2 +1,0 @@
-/usr/bin/ar qc librefsignal.a CMakeFiles/refsignal.dir/src/ref.cpp.o
-/usr/bin/ranlib librefsignal.a

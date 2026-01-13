@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/test_ref.dir/src/test_ref.cpp.o -o bin/test_ref  librefsignal.a 
